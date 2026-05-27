@@ -1,0 +1,102 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+const entries = (await getCollection("diary"))
+  .filter((e) => !e.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const byYear = new Map<number, typeof entries>();
+for (const e of entries) {
+  const y = e.data.date.getFullYear();
+  byYear.set(y, [...(byYear.get(y) ?? []), e]);
+}
+const years = [...byYear.keys()].sort((a, b) => b - a);
+---
+
+<BaseLayout title="日记" description="以事件为主的日记摘选：挑选关键日子，做成可回看、可链接的时间线。">
+  <section class="card hero">
+    <h1>日记</h1>
+    <p>这里会收录我从每日记录里挑出的“关键日子”：重要事件、决定、旅途、相遇与转折。</p>
+  </section>
+
+  <section class="timeline">
+    {years.map((year) => (
+      <div class="year">
+        <div class="year-label">{year}</div>
+        <ul class="tlist">
+          {byYear.get(year)?.map((e) => (
+            <li class="trow">
+              <span class="tdate">{e.data.date.toISOString().slice(0, 10)}</span>
+              <a class="tlink" href={`/diary/${e.slug}`}>{e.data.title}</a>
+              {e.data.place ? <span class="tmeta">{e.data.place}</span> : null}
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </section>
+
+  <style>
+    .timeline {
+      padding-top: 18px;
+      display: grid;
+      gap: 18px;
+    }
+    .year {
+      border-top: 1px solid var(--border);
+      padding-top: 14px;
+    }
+    .year-label {
+      font-family: var(--mono);
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .tlist {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 10px;
+    }
+    .trow {
+      display: grid;
+      grid-template-columns: 120px 1fr auto;
+      gap: 12px;
+      align-items: baseline;
+      padding: 8px 0;
+      border-bottom: 1px solid color-mix(in oklab, var(--border) 70%, transparent);
+    }
+    .tdate {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    .tlink {
+      color: var(--text);
+      text-decoration: none;
+    }
+    .tlink:hover {
+      text-decoration: underline;
+      text-underline-offset: 0.25em;
+    }
+    .tmeta {
+      color: var(--muted);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+    @media (max-width: 640px) {
+      .trow {
+        grid-template-columns: 1fr;
+      }
+      .tmeta {
+        display: none;
+      }
+    }
+  </style>
+</BaseLayout>
+

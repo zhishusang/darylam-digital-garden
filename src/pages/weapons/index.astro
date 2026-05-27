@@ -1,0 +1,168 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+function normalizeName(raw: string) {
+  return raw.replace(/^\d{3}-/, "").replace(/["'“”]/g, "").trim();
+}
+
+function pickQuote(body: string) {
+  const lines = body.split("\n");
+  const blockquote = lines.find((line) => line.trim().startsWith(">"));
+  const raw = (blockquote ?? "").replace(/^>\s*/, "").trim();
+  if (raw) return raw.replace(/[*_`"]/g, "").slice(0, 170);
+  return body.replace(/[#>*`]/g, " ").replace(/\s+/g, " ").trim().slice(0, 170);
+}
+
+const portraitMap: Record<string, string> = {
+  "PAUL GRAHAM": "/giant-portraits/silhouettes/paul-graham-silhouette.png",
+  "DIETER RAMS": "/giant-portraits/silhouettes/dieter-rams-silhouette.png",
+  "VIKTOR FRANKL": "/giant-portraits/silhouettes/viktor-frankl-silhouette.png",
+  "STEPH ANGO": "/giant-portraits/silhouettes/steph-ango-silhouette.png",
+  "松尾芭蕉": "/giant-portraits/silhouettes/matsuo-basho-silhouette.png",
+  "BJ FOGG": "/giant-portraits/silhouettes/bj-fogg-silhouette.png",
+  "理查德·费曼": "/giant-portraits/silhouettes/richard-feynman-silhouette.png",
+  "圣埃克苏佩里": "/giant-portraits/silhouettes/saint-exupery-silhouette.png",
+};
+
+const quoteOverride: Record<string, string> = {
+  "PAUL GRAHAM": "The more labels you have for yourself, the dumber they make you.",
+  "DIETER RAMS": "Weniger, aber besser.",
+  "VIKTOR FRANKL":
+    "Everything can be taken from a man but one thing: the freedom to choose one's attitude.",
+  "STEPH ANGO": "In the wilderness of my mind.",
+};
+
+const entries = (await getCollection("weapons"))
+  .filter((entry) => !entry.data.draft)
+  .sort((a, b) => (b.data.updatedDate?.valueOf() ?? 0) - (a.data.updatedDate?.valueOf() ?? 0))
+  .map((entry) => {
+    const title = normalizeName(entry.data.title);
+    const key = title.toUpperCase();
+    return {
+      slug: entry.slug,
+      title,
+      quote: quoteOverride[key] ?? pickQuote(entry.body),
+      updatedDate: entry.data.updatedDate?.toISOString().slice(0, 10) ?? "",
+      portrait: portraitMap[key] ?? "/giant-portraits/silhouettes/unknown-giant-silhouette.png",
+    };
+  });
+---
+
+<BaseLayout title="Weapons" description="A rotating showcase of the giants and their weapons.">
+  <section class="weapons-hero">
+    <h1>Weapons</h1>
+    <p>Giants I keep learning from. Each visit surfaces a different constellation.</p>
+  </section>
+
+  <section class="quote-stage" data-quote-stage>
+    {entries.map((entry) => (
+      <article class="quote-card" data-quote-card>
+        <a class="quote-link" href={`/weapons/${entry.slug}`}>
+          <img src={entry.portrait} alt={`${entry.title} portrait`} loading="lazy" decoding="async" />
+          <div class="quote-body">
+            <p class="name">{entry.title}</p>
+            <blockquote>{entry.quote}</blockquote>
+            <time>{entry.updatedDate}</time>
+          </div>
+        </a>
+      </article>
+    ))}
+  </section>
+
+  <script is:inline>
+    (() => {
+      const stage = document.querySelector("[data-quote-stage]");
+      if (!stage) return;
+      const cards = Array.from(stage.querySelectorAll("[data-quote-card]"));
+      if (cards.length === 0) return;
+
+      function shuffle(items) {
+        const copy = [...items];
+        for (let index = copy.length - 1; index > 0; index--) {
+          const swapIndex = Math.floor(Math.random() * (index + 1));
+          [copy[index], copy[swapIndex]] = [copy[swapIndex], copy[index]];
+        }
+        return copy;
+      }
+
+      function renderFive() {
+        const chosen = new Set(shuffle(cards).slice(0, Math.min(5, cards.length)));
+        cards.forEach((card) => {
+          card.style.display = chosen.has(card) ? "block" : "none";
+        });
+      }
+
+      renderFive();
+      window.setInterval(renderFive, 9000);
+    })();
+  </script>
+</BaseLayout>
+
+<style>
+  .weapons-hero {
+    padding: 28px 0 34px;
+    max-width: 56ch;
+  }
+  .weapons-hero h1 {
+    margin: 0;
+    font-family: var(--serif);
+    font-size: 42px;
+    font-weight: 400;
+  }
+  .weapons-hero p {
+    margin: 10px 0 0;
+    color: var(--muted);
+    font-family: var(--serif);
+    font-size: 17px;
+    line-height: 1.6;
+  }
+
+  .quote-stage {
+    display: grid;
+    gap: 34px;
+    padding-bottom: 120px;
+  }
+
+  .quote-link {
+    display: grid;
+    grid-template-columns: 72px 1fr;
+    gap: 18px;
+    color: inherit;
+    text-decoration: none;
+    align-items: start;
+  }
+
+  .quote-link img {
+    width: 72px;
+    height: 72px;
+    border-radius: 999px;
+    object-fit: cover;
+    filter: grayscale(1) contrast(1.2);
+    border: 1px solid color-mix(in oklab, var(--border) 72%, transparent);
+  }
+
+  .name {
+    margin: 0;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  blockquote {
+    margin: 8px 0 8px;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: clamp(28px, 3.8vw, 44px);
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+  }
+
+  time {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+  }
+</style>

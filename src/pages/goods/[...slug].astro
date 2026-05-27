@@ -1,0 +1,29 @@
+---
+import { getCollection, type CollectionEntry } from "astro:content";
+import ContentLayout from "../../layouts/ContentLayout.astro";
+
+export async function getStaticPaths() {
+  const items = await getCollection("goods");
+  return items.map((item) => ({ params: { slug: item.slug }, props: { item } }));
+}
+
+type Props = { item: CollectionEntry<"goods"> };
+const { item } = Astro.props;
+const { Content } = await item.render();
+---
+
+<ContentLayout
+  title={item.data.title}
+  description={item.data.description}
+  pubDate={item.data.pubDate}
+  updatedDate={item.data.updatedDate}
+  tags={item.data.tags}
+>
+  {item.data.link ? (
+    <p style="margin: 0 0 18px">
+      外部链接：<a href={item.data.link} target="_blank" rel="noreferrer">{item.data.link}</a>
+    </p>
+  ) : null}
+  <Content />
+</ContentLayout>
+

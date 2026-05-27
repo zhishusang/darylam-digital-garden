@@ -1,0 +1,49 @@
+---
+type Props = {
+  src: string;
+  title?: string;
+};
+
+const { src, title } = Astro.props;
+---
+
+<figure class="audio card">
+  <figcaption class="cap">
+    <span class="label">Audio</span>
+    {title ? <span class="title">{title}</span> : null}
+  </figcaption>
+  <audio controls preload="metadata" src={src} />
+</figure>
+
+<style>
+  .audio {
+    padding: 14px 14px;
+    margin: 18px 0;
+  }
+  .cap {
+    display: flex;
+    gap: 10px;
+    align-items: baseline;
+    margin-bottom: 10px;
+    color: var(--muted);
+    font-size: 13px;
+  }
+  .label {
+    font-family: var(--mono);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 2px 8px;
+    background: color-mix(in oklab, var(--panel) 70%, transparent);
+  }
+  .title {
+    color: var(--text);
+    font-weight: 600;
+  }
+  audio {
+    width: 100%;
+  }
+  figure {
+    border-radius: var(--radius);
+  }
+</style>
+

@@ -1,0 +1,30 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+const items = (await getCollection("goods"))
+  .filter((e) => !e.data.draft)
+  .sort((a, b) => (b.data.pubDate?.valueOf() ?? 0) - (a.data.pubDate?.valueOf() ?? 0));
+---
+
+<BaseLayout title="好物" description="我真正用过、喜欢、愿意反复推荐的东西。">
+  <section class="card hero">
+    <h1>好物</h1>
+    <p>这里收录我筛选后的“值得拥有”：工具、物件、服务，以及它们为什么好用。</p>
+  </section>
+
+  <section class="grid">
+    {items.map((it) => (
+      <a class="card item" href={`/goods/${it.slug}`}>
+        <h2>{it.data.title}</h2>
+        <p>{it.data.description}</p>
+        <div class="meta">
+          {it.data.pubDate ? <span>{it.data.pubDate.toISOString().slice(0, 10)}</span> : null}
+          {it.data.tags?.length ? <span class="tag">#{it.data.tags[0]}</span> : null}
+          {it.data.link ? <span class="tag">link</span> : null}
+        </div>
+      </a>
+    ))}
+  </section>
+</BaseLayout>
+

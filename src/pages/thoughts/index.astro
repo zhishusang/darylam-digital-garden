@@ -1,0 +1,31 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+const notes = (await getCollection("garden"))
+  .filter((e) => !e.data.draft)
+  .sort((a, b) => {
+    const ta = a.data.updatedDate?.valueOf() ?? a.data.pubDate?.valueOf() ?? 0;
+    const tb = b.data.updatedDate?.valueOf() ?? b.data.pubDate?.valueOf() ?? 0;
+    return tb - ta;
+  });
+---
+
+<BaseLayout title="想法" description="想法与笔记：持续修订、允许不完美、允许生长。">
+  <section class="card hero">
+    <h1>想法</h1>
+    <p>这是公开的思考与笔记：我会反复编辑、补充链接、修正观点，让它慢慢变得更清晰。</p>
+  </section>
+
+  <section class="grid">
+    {notes.map((note) => (
+      <a class="card item" href={`/thoughts/${note.slug}`}>
+        <h2>{note.data.title}</h2>
+        <p>{note.data.description}</p>
+        <div class="meta">
+          {note.data.tags?.length ? <span class="tag">#{note.data.tags[0]}</span> : null}
+        </div>
+      </a>
+    ))}
+  </section>
+</BaseLayout>

@@ -1,0 +1,18 @@
+---
+type Props = {
+  title: string;
+  description?: string;
+  canonical?: string;
+};
+
+const { title, description, canonical } = Astro.props;
+const siteTitle = "我的数字花园";
+const fullTitle = title === siteTitle ? siteTitle : `${title} · ${siteTitle}`;
+---
+
+<meta charset="utf-8" />
+<title>{fullTitle}</title>
+{description ? <meta name="description" content={description} /> : null}
+{canonical ? <link rel="canonical" href={canonical} /> : null}
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0b0f14" />

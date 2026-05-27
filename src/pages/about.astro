@@ -1,0 +1,116 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="About — Dary's Digital Garden" description="About Dary Lam and the stories behind this garden.">
+  <section class="about-wrap">
+    <div class="avatar-center">
+      <img src="/avatar-dary.png" alt="Dary with Noodle and Snowball" class="about-avatar" />
+    </div>
+
+    <article class="about-copy">
+      <p>
+        This photo is me with my dog <strong>Noodle</strong> and my cat <strong>Snowball</strong>. They
+        were with me through an important chapter of life, and keeping them here makes this page feel
+        like home, not just a profile.
+      </p>
+
+      <p>
+        Content creator, especially in eink area for the past 10 years, known as ID 直树桑 on
+        <a href="https://www.zhihu.com/people/Jesusang" target="_blank" rel="noreferrer">知乎</a>.
+      </p>
+      <p>
+        Vintage buyer and collector, you might find me as horsemanvtg on
+        <a href="https://xhslink.com/m/A6oYcpxcmSn" target="_blank" rel="noreferrer">小红书</a>.
+      </p>
+      <p>
+        For Dary Lam, I use it on
+        <a href="https://www.couchsurfing.com/c/users/darylam" target="_blank" rel="noreferrer"
+          >Couchsurfing</a
+        >, where I hosted over 130 people from over 50 countries, and you can find some of my
+        stories in <a href="/travel">travel</a>.
+      </p>
+
+      <p>
+        I believe talking with people from different backgrounds is a great way to learn, not just
+        language, but life experience and other unknown things. That is why I hosted so many people
+        in the past 9 years.
+      </p>
+      <p>
+        Another way I learn from people is reading, especially those giant persons. To my sight,
+        each of them has several weapons, and I post them in <a href="/weapons">weapons</a>. I think
+        you can also learn something after reading them.
+      </p>
+
+      <p>
+        I am also a foodie. I learn dishes from YouTube and Couchsurfing friends. I put my recipes
+        and stories in <a href="/foodie">foodie</a>.
+      </p>
+      <p>
+        Sometimes I have random ideas or something I think might be good for me or my friends. I put
+        them in <a href="/thoughts">thoughts</a>.
+      </p>
+      <p>
+        I am a long-term diary writer. I have written diaries for over ten years, and I post some of
+        them in <a href="/diary">diary</a>.
+      </p>
+      <p>
+        For <a href="/blog">blogger</a>, those are official articles I posted in 微信公众号. They are
+        written in a more standard style, mostly in Chinese.
+      </p>
+
+      <p class="contact">Please feel free to connect me through <a href="mailto:hi@darylam.com">hi@darylam.com</a>.</p>
+    </article>
+  </section>
+</BaseLayout>
+
+<style>
+  .about-wrap {
+    padding-top: 26px;
+    padding-bottom: 120px;
+  }
+
+  .avatar-center {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 34px;
+  }
+
+  .about-avatar {
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid color-mix(in oklab, var(--border) 78%, transparent);
+  }
+
+  .about-copy {
+    font-family: var(--serif);
+    font-size: 20px;
+    line-height: 1.78;
+    color: var(--text);
+  }
+
+  .about-copy p {
+    margin: 0 0 22px;
+  }
+
+  .about-copy a {
+    color: var(--text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .contact {
+    margin-top: 40px;
+    font-style: italic;
+    color: var(--muted);
+  }
+
+  @media (max-width: 720px) {
+    .about-avatar {
+      width: 180px;
+      height: 180px;
+    }
+  }
+</style>

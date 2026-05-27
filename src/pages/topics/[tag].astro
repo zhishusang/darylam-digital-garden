@@ -1,0 +1,60 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+  const entries = [
+    ...(await getCollection("blog")).filter((e) => !e.data.draft),
+    ...(await getCollection("garden")).filter((e) => !e.data.draft),
+  ];
+  const tags = new Set<string>();
+  for (const e of entries) for (const t of e.data.tags ?? []) if (t?.trim()) tags.add(t.trim());
+  return [...tags].map((tag) => ({ params: { tag } }));
+}
+
+const { tag } = Astro.params;
+const decodedTag = decodeURIComponent(tag ?? "");
+
+const blog = (await getCollection("blog"))
+  .filter((e) => !e.data.draft)
+  .filter((e) => (e.data.tags ?? []).includes(decodedTag))
+  .sort((a, b) => (b.data.pubDate?.valueOf() ?? 0) - (a.data.pubDate?.valueOf() ?? 0));
+
+const garden = (await getCollection("garden"))
+  .filter((e) => !e.data.draft)
+  .filter((e) => (e.data.tags ?? []).includes(decodedTag));
+---
+
+<BaseLayout title={`#${decodedTag}`} description={`主题：${decodedTag}（文章与花园笔记汇总）`}>
+  <section class="card hero">
+    <h1>#{decodedTag}</h1>
+    <p>同一个主题下，既可以有“发布型”的文章，也可以有“生长型”的花园笔记。</p>
+  </section>
+
+  <section class="grid">
+    <div class="card item">
+      <h2>文章</h2>
+      <p>更适合对外引用与分享。</p>
+      <div class="meta">
+        {blog.length ? (
+          blog.map((p) => <a href={`/blog/${p.slug}`}>{p.data.title}</a>)
+        ) : (
+          <span>暂无</span>
+        )}
+      </div>
+    </div>
+
+    <div class="card item">
+      <h2>花园</h2>
+      <p>更适合持续修订与积累。</p>
+      <div class="meta">
+        {garden.length ? (
+          garden.map((n) => <a href={`/garden/${n.slug}`}>{n.data.title}</a>)
+        ) : (
+          <span>暂无</span>
+        )}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+

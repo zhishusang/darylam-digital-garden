@@ -1,0 +1,58 @@
+---
+import "../styles/global.css";
+import Seo from "../components/Seo.astro";
+
+type Props = {
+  title: string;
+  description?: string;
+};
+
+const { title, description } = Astro.props;
+const pathname = Astro.url.pathname;
+const canonical = new URL(pathname, Astro.site ?? Astro.url.origin).toString();
+const isHome = pathname === "/";
+
+const navItems = [
+  { href: "/", label: "/home" },
+  { href: "/foodie", label: "/foodie" },
+  { href: "/travel", label: "/travel" },
+  { href: "/blog", label: "/blog" },
+  { href: "/thoughts", label: "/thoughts" },
+  { href: "/diary", label: "/diary" },
+  { href: "/weapons", label: "/weapons" },
+  { href: "/about", label: "/about" }
+];
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <Seo title={title} description={description} canonical={canonical} />
+  </head>
+  <body>
+    {!isHome ? (
+      <header class="pure-header">
+        <div class="pure-shell">
+          <h1 class="pure-title">
+            <a class="pure-title-link" href="/">Dary&apos;s Digital Garden</a>
+          </h1>
+          <nav class="pure-nav" aria-label="Primary">
+            {navItems.map((item) => (
+              <a href={item.href} aria-current={pathname === item.href ? "page" : undefined}>
+                {item.label}
+              </a>
+            ))}
+          </nav>
+        </div>
+      </header>
+    ) : null}
+    <main class="pure-main">
+      <div class="pure-shell">
+        <slot />
+      </div>
+    </main>
+    <footer class="pure-footer">
+      <div class="pure-shell">© {new Date().getFullYear()} · Astro · 持续生长中</div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,385 @@
+:root {
+  color-scheme: light dark;
+  
+  /* 🎨 独家特调色彩：中古燕麦纸张感，克制而温润 */
+  --bg: #f4f3ef;               /* 温润的纸张原色，类似复古书籍或Moleskine内页 */
+  --panel: rgba(24df, 24a, 242, 0.65);
+  --text: #1d1e21;             /* 带有高阶灰度的炭黑，拒绝死板纯黑 */
+  --muted: #6e737a;            /* 柔和的烟灰色，用于辅助信息 */
+  --link: #5c6b61;             /* 中古沉静的“橄榄绿/石墨绿”，替代刺眼的数码蓝 */
+  --border: rgba(29, 30, 33, 0.08); /* 极细、克制的缝线感边框 */
+  --shadow: none;
+  --radius: 8px;               /* 减小圆角，从圆润变为更干练、致敬经典的硬朗线条 */
+  --maxw: 840px;               /* 稍微拉宽，给左右分栏留出呼吸感 */
+  --leading: 1.85;
+  
+  /* 🔤 字体排版体系：注入高级复古衬线与现代无衬线的平衡 */
+  --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
+  --sans: ui-sans-serif, system-ui, -apple-system, "PingFang SC", "Hiragino Sans GB", "Helvetica Neue", Arial, sans-serif;
+  --serif: "Garamond", "Georgia", "Iowan Old Style", "Source Han Serif SC", "Songti SC", serif;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #f4f3ef; 
+    --text: #1d1e21;
+    --muted: #6e737a;
+    --link: #5c6b61; 
+    --border: rgba(29, 30, 33, 0.09);
+  }
+}
+
+/* 🌙 暗黑模式：冷冽坚硬的“黑曜石与工业银灰” */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #121316;              /* 深沉的黑曜石色 */
+    --panel: rgba(24, 25, 28, 0.65);
+    --text: #e2e4e9;            /* 柔和的银白 */
+    --muted: #8a909a;
+    --link: #a1b3a7;            /* 浅淡的鼠尾草绿 */
+    --border: rgba(255, 255, 255, 0.08);
+  }
+}
+
+* {
+  box-sizing: border-box;
+  letter-spacing: 0.015em;     /* 全局微调字间距，带来更好的呼吸感 */
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  line-height: var(--leading);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 🌿 链接与交互优化 */
+a {
+  color: var(--link);
+  text-decoration: none;
+  transition: color 0.2s ease, opacity 0.2s ease;
+}
+a:hover {
+  text-decoration: none;       /* 移除死板的下划线 */
+  opacity: 0.8;                /* 改用柔和的透明度变化，视觉上更克制 */
+}
+
+main {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.pure-shell {
+  max-width: 580px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.pure-header {
+  padding: 80px 0 0;
+}
+
+.pure-title {
+  margin: 0 0 6px 0;
+  font-family: var(--serif);
+  font-size: 26px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+.pure-title-link {
+  color: var(--text);
+}
+.pure-title-link:hover {
+  opacity: 1;
+}
+
+.pure-nav {
+  display: flex;
+  gap: 16px;
+  font-family: var(--mono);
+  font-size: 11px;
+  margin-bottom: 56px;
+  flex-wrap: wrap;
+}
+
+.pure-nav a {
+  color: var(--muted);
+  transition: color 0.2s ease, opacity 0.2s ease;
+}
+.pure-nav a:hover {
+  color: var(--text);
+  opacity: 1;
+}
+.pure-nav a[aria-current="page"] {
+  color: var(--text);
+}
+
+.pure-main {
+  padding: 0 0 120px;
+}
+
+.pure-footer {
+  padding: 0 0 80px;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 11px;
+}
+
+.home {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+}
+@media (min-width: 820px) {
+  .home {
+    grid-template-columns: 1.1fr 0.9fr; /* 调换主次或平衡配比，让整体更稳重 */
+    gap: 64px;                 /* 拉大间距，形成天然的呼吸视觉区 */
+    align-items: start;
+  }
+}
+
+.home-left {
+  min-width: 0;
+}
+.home-right {
+  min-width: 0;
+}
+@media (min-width: 820px) {
+  .home-right {
+    position: sticky;
+    top: 60px;
+  }
+}
+
+/* ✉️ 右侧欢迎信：将其升级为真正的“沉浸式阅读卡片” */
+.letter {
+  padding: 0;
+  border-left: none;           /* 砍掉突兀的粗左边框 */
+  background: transparent;
+}
+.letter .kicker {
+  font-family: var(--mono);
+  color: var(--muted);
+  font-size: 11px;
+  letter-spacing: 0.2em;       /* 极致宽的西文字体间距 */
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.letter h1 {
+  margin: 0 0 20px;
+  font-family: var(--serif);    /* 完美的古典大标题 */
+  font-size: 30px;
+  font-weight: 400;            /* 拒绝粗暴的加粗，依靠字体本身的风骨 */
+  line-height: 1.2;
+}
+.letter p {
+  margin: 0 0 18px;
+  font-family: var(--serif);   /* 欢迎信正文全部升级为高级衬线体，如同读一封羊皮纸信件 */
+  font-size: 15px;
+  color: color-mix(in oklab, var(--text) 90%, transparent);
+  max-width: 68ch;
+}
+.letter .sig {
+  margin-top: 24px;
+  color: var(--text);
+  font-family: var(--serif);
+  font-style: italic;          /* 署名斜体 */
+  font-size: 16px;
+}
+.letter .stamp {
+  margin: 24px 0 12px;
+  color: var(--muted);
+  opacity: 0.6;
+}
+.letter .stamp svg {
+  width: 90px;
+  height: auto;
+}
+.home-links {
+  margin: 32px 0 0;
+  padding: 20px 0 0;
+  border-top: 1px dashed var(--border); /* 使用虚线分隔，增加手账或笔记本的精致感 */
+  list-style: none;
+  display: grid;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.home-links a {
+  color: var(--text);
+  font-family: var(--sans);
+  font-weight: 500;
+}
+
+.block {
+  padding: 0;
+  margin-bottom: 40px;         /* 模块与模块之间保留充足的安全距离 */
+}
+
+.block-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--text); /* 使用坚实但极细的底线界定模块 */
+  padding-bottom: 6px;
+}
+.block-head h2 {
+  margin: 0;
+  font-family: var(--serif);   /* 板块分类使用衬线，经典隽永 */
+  font-size: 18px;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+.block-head .more {
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+}
+
+ul.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 4px;                    /* 紧凑精致的行距 */
+}
+li.row {
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px dashed var(--border); /* 细虚线列表，呈现极佳的细节 */
+}
+li.row:last-child {
+  border-bottom: none;
+}
+li.row .title {
+  color: var(--text);
+  text-decoration: none;
+  font-size: 14.5px;
+  font-weight: 400;
+}
+li.row .title:hover {
+  color: var(--link);
+  text-decoration: none;
+}
+li.row .date {
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.doodle {
+  margin: 24px 0;
+  color: var(--muted);
+  opacity: 0.3;                /* 弱化线条干扰 */
+}
+.doodle svg {
+  width: 100%;
+  height: 32px;
+}
+
+.home-foot {
+  margin-top: 48px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 12px;
+  font-family: var(--mono);     /* 底部页脚使用单度字型，呈现工业特质 */
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  align-items: baseline;
+}
+.home-foot a {
+  color: var(--muted);
+}
+.home-foot a:hover {
+  color: var(--text);
+}
+
+/* 🌐 导航与通用组件优化 */
+header.site {
+  position: relative;
+  background: transparent;     /* 去掉死板的背景背景 */
+  border-bottom: 1px dashed var(--border);
+}
+.nav {
+  width: min(var(--maxw), calc(100% - 44px));
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 0;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 18px;
+  color: var(--text);
+}
+.brand .dot {
+  width: 6px;
+  height: 6px;
+  background: var(--link);     /* 用标志性的橄榄绿作为呼吸点缀 */
+  opacity: 1;
+}
+header.site nav a {
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 400;
+  padding: 6px 0;
+  margin-left: 16px;
+  border-radius: 0;
+}
+header.site nav a[aria-current="page"] {
+  color: var(--text);
+  text-decoration: none;
+  border-bottom: 1px solid var(--text); /* 用纯粹的横线代替气泡包裹 */
+}
+
+/* 📄 文章阅读区排版（Prose） */
+article.prose {
+  padding: 0;                  /* 释放不必要的内边距 */
+  font-family: var(--serif);   /* 正文全面进入高品质衬线沉浸模式 */
+  font-size: 16.5px;
+  color: var(--text);
+}
+article.prose h1 {
+  margin-top: 0;
+  font-size: 32px;
+  font-weight: 400;
+  line-height: 1.25;
+}
+article.prose :where(h2, h3) {
+  font-family: var(--sans);    /* 标题使用利落的无衬线，形成经典的“正文衬线、标题无衬线”骨骼 */
+  margin-top: 1.8em;
+  font-weight: 600;
+  color: var(--text);
+}
+article.prose blockquote {
+  margin: 2em 0;
+  padding: 4px 0 4px 20px;
+  border-left: 2px solid var(--link); /* 使用特调橄榄绿竖线 */
+  color: var(--muted);
+  font-style: italic;
+}
+/* 保持整体极简，但避免用 !important 破坏全局可维护性 */

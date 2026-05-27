@@ -1,0 +1,25 @@
+{
+  "name": "digital-garden",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "sync": "npm run sync:weapons && npm run sync:foodie",
+    "predev": "npm run sync",
+    "prebuild": "npm run sync",
+    "dev": "ASTRO_TELEMETRY_DISABLED=1 astro dev",
+    "build": "ASTRO_TELEMETRY_DISABLED=1 astro build",
+    "preview": "ASTRO_TELEMETRY_DISABLED=1 astro preview",
+    "check": "ASTRO_TELEMETRY_DISABLED=1 astro check",
+    "sync:weapons": "node scripts/sync-weapons.mjs --prune",
+    "sync:foodie": "node scripts/sync-foodie.mjs --prune"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "^4.3.0",
+    "astro": "^5.9.0",
+    "remark-gfm": "^4.0.1"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.9",
+    "typescript": "^5.9.3"
+  }
+}

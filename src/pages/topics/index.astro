@@ -1,0 +1,49 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+const entries = [
+  ...(await getCollection("blog")).filter((e) => !e.data.draft).map((e) => ({ kind: "blog" as const, e })),
+  ...(await getCollection("garden")).filter((e) => !e.data.draft).map((e) => ({ kind: "garden" as const, e })),
+];
+
+const counts = new Map<string, number>();
+for (const { e } of entries) {
+  for (const tag of e.data.tags ?? []) {
+    const key = tag.trim();
+    if (!key) continue;
+    counts.set(key, (counts.get(key) ?? 0) + 1);
+  }
+}
+
+const topics = [...counts.entries()]
+  .map(([tag, count]) => ({ tag, count }))
+  .sort((a, b) => b.count - a.count || a.tag.localeCompare(b.tag, "zh-Hans-CN"));
+---
+
+<BaseLayout title="主题" description="按主题浏览：把不同平台与不同题材的内容，统一到可检索的入口。">
+  <section class="card hero">
+    <h1>主题</h1>
+    <p>用标签做目录：无论是文章还是花园笔记，都可以汇聚到同一个主题入口。</p>
+  </section>
+
+  <section class="grid">
+    {topics.length ? (
+      topics.map((t) => (
+        <a class="card item" href={`/topics/${encodeURIComponent(t.tag)}`}>
+          <h2>#{t.tag}</h2>
+          <div class="meta">
+            <span>{t.count} 篇/条</span>
+            <span class="tag">点击进入</span>
+          </div>
+        </a>
+      ))
+    ) : (
+      <div class="card item">
+        <h2>还没有主题</h2>
+        <p>给内容加上 `tags` 后，这里会自动生成主题列表。</p>
+      </div>
+    )}
+  </section>
+</BaseLayout>
+

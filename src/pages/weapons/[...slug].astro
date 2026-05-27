@@ -1,0 +1,42 @@
+---
+import { getCollection, type CollectionEntry } from "astro:content";
+import ContentLayout from "../../layouts/ContentLayout.astro";
+
+export async function getStaticPaths() {
+  const entries = await getCollection("weapons");
+  return entries.map((entry) => ({ params: { slug: entry.slug }, props: { entry } }));
+}
+
+type Props = { entry: CollectionEntry<"weapons"> };
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+---
+
+<ContentLayout
+  title={entry.data.title}
+  description={entry.data.description}
+  tags={entry.data.tags}
+>
+  <div class="weapons-content">
+    <Content />
+  </div>
+
+  {(entry.data.updatedDate || entry.data.pubDate) ? (
+    <p class="weapons-updated-at">
+      更新 {(entry.data.updatedDate || entry.data.pubDate)?.toISOString().slice(0, 10)}
+    </p>
+  ) : null}
+</ContentLayout>
+
+<style>
+  .weapons-content :global(h1:first-child) {
+    display: none;
+  }
+
+  .weapons-updated-at {
+    margin: 44px 0 0;
+    color: var(--muted);
+    font-size: 13px;
+    letter-spacing: 0.04em;
+  }
+</style>

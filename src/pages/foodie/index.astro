@@ -1,0 +1,164 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+function firstImage(markdown: string | undefined) {
+  if (!markdown) return null;
+  const match = markdown.match(/!\[[^\]]*\]\(([^)]+)\)/);
+  return match?.[1] ?? null;
+}
+
+function excerpt(markdown: string | undefined) {
+  if (!markdown) return "";
+  return markdown
+    .replace(/!\[[^\]]*\]\([^)]+\)/g, " ")
+    .replace(/\[[^\]]+\]\([^)]+\)/g, " ")
+    .replace(/^#{1,6}\s+/gm, "")
+    .replace(/[*_`>~-]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, 150);
+}
+
+const entries = (await getCollection("foodie"))
+  .filter((entry) => !entry.data.draft)
+  .sort((a, b) => (a.data.index ?? 999999) - (b.data.index ?? 999999))
+  .map((entry) => ({
+    slug: entry.slug,
+    title: entry.data.title,
+    image: firstImage(entry.body),
+    text: entry.data.description?.trim() || excerpt(entry.body) || "Kitchen note in progress.",
+    updatedDate: entry.data.updatedDate?.toISOString().slice(0, 10) ?? "",
+    index: entry.data.index,
+  }));
+---
+
+<BaseLayout title="Foodie" description="Recipes and kitchen notes from Dary's daily learning.">
+  <section class="foodie-hero">
+    <h1>Foodie</h1>
+    <p>Recipes, experiments, and stories from my kitchen.</p>
+  </section>
+
+  <section class="strip-list">
+    {entries.map((entry) => (
+      <a class="strip" href={`/foodie/${entry.slug}`}>
+        {entry.image ? (
+          <img src={entry.image} alt={entry.title} loading="lazy" decoding="async" />
+        ) : (
+          <div class="strip-image-placeholder" aria-hidden="true">Photo pending</div>
+        )}
+        <div class="copy">
+          <p class="index">{typeof entry.index === "number" ? String(entry.index).padStart(3, "0") : "—"}</p>
+          <h2>{entry.title}</h2>
+          <p class="text">{entry.text}</p>
+          <time>{entry.updatedDate}</time>
+        </div>
+      </a>
+    ))}
+  </section>
+</BaseLayout>
+
+<style>
+  .foodie-hero {
+    padding: 28px 0 26px;
+    max-width: 56ch;
+  }
+  .foodie-hero h1 {
+    margin: 0;
+    font-family: var(--serif);
+    font-size: 42px;
+    font-weight: 400;
+  }
+  .foodie-hero p {
+    margin: 10px 0 0;
+    color: var(--muted);
+    font-family: var(--serif);
+    font-size: 17px;
+    line-height: 1.6;
+  }
+
+  .strip-list {
+    display: grid;
+    gap: 16px;
+    padding-bottom: 120px;
+  }
+
+  .strip {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 18px;
+    padding: 14px;
+    border: 1px solid color-mix(in oklab, var(--border) 78%, transparent);
+    color: inherit;
+    text-decoration: none;
+    align-items: center;
+    background: color-mix(in oklab, var(--bg) 93%, white);
+  }
+
+  .strip img {
+    width: 100%;
+    height: 124px;
+    object-fit: cover;
+    border-radius: 3px;
+    border: 1px solid color-mix(in oklab, var(--border) 78%, transparent);
+  }
+
+  .strip-image-placeholder {
+    width: 100%;
+    height: 124px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0 14px;
+    border-radius: 3px;
+    border: 1px solid color-mix(in oklab, var(--border) 65%, transparent);
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: color-mix(in oklab, var(--bg) 90%, white);
+  }
+
+  .strip-image-placeholder::before {
+    content: "";
+    width: 36px;
+    height: 1px;
+    background: color-mix(in oklab, var(--text) 24%, transparent);
+    margin-right: 10px;
+  }
+
+  .copy .index {
+    margin: 0;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+  }
+  .copy h2 {
+    margin: 6px 0 6px;
+    font-family: var(--serif);
+    font-size: 25px;
+    font-weight: 400;
+    line-height: 1.2;
+  }
+  .copy .text {
+    margin: 0 0 8px;
+    color: color-mix(in oklab, var(--text) 82%, transparent);
+    line-height: 1.55;
+  }
+  .copy time {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  @media (max-width: 740px) {
+    .strip {
+      grid-template-columns: 1fr;
+    }
+    .strip img {
+      height: 188px;
+    }
+  }
+</style>

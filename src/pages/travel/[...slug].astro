@@ -1,0 +1,55 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection, render } from "astro:content";
+
+export async function getStaticPaths() {
+  const entries = await getCollection("travel", (entry) => !entry.data.draft);
+  return entries.map((entry) => ({ params: { slug: entry.slug }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<BaseLayout title={`${entry.data.title} · 旅行`} description={entry.data.description}>
+  <article class="prose">
+    <h1>{entry.data.title}</h1>
+    <div class="meta">
+      {entry.data.place ? <span>{entry.data.place}</span> : null}
+      {entry.data.updatedDate ? <span>{entry.data.updatedDate.toISOString().slice(0, 10)}</span> : null}
+      {entry.data.tags?.length ? <span>#{entry.data.tags.join(" #")}</span> : null}
+    </div>
+    <Content />
+  </article>
+</BaseLayout>
+
+<style>
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: -4px 0 22px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  article.prose {
+    max-width: 700px;
+  }
+
+  article.prose :global(p) {
+    margin: 0 0 1.12em;
+    line-height: 1.7;
+  }
+
+  article.prose :global(img) {
+    width: 100%;
+    max-height: 420px;
+    object-fit: cover;
+    margin: 8px 0 24px;
+    border-radius: 2px;
+    border: 1px solid color-mix(in oklab, var(--border) 72%, transparent);
+    filter: contrast(1.02);
+  }
+</style>

@@ -1,0 +1,26 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+const notes = (await getCollection("garden")).filter((e) => !e.data.draft);
+---
+
+<BaseLayout title="花园" description="数字花园：持续修订的笔记与页面。">
+  <section class="card hero">
+    <h1>花园</h1>
+    <p>这里是持续生长的页面：允许不完美、允许反复编辑、允许链接到更多想法。</p>
+  </section>
+
+  <section class="grid">
+    {notes.map((note) => (
+      <a class="card item" href={`/garden/${note.slug}`}>
+        <h2>{note.data.title}</h2>
+        <p>{note.data.description}</p>
+        <div class="meta">
+          {note.data.tags?.length ? <span class="tag">#{note.data.tags[0]}</span> : null}
+        </div>
+      </a>
+    ))}
+  </section>
+</BaseLayout>
+

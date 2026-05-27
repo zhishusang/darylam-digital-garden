@@ -1,0 +1,33 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+const entries = (await getCollection("travel"))
+  .filter((entry) => !entry.data.draft)
+  .sort((a, b) => {
+    const ta = a.data.updatedDate?.valueOf() ?? a.data.pubDate?.valueOf() ?? 0;
+    const tb = b.data.updatedDate?.valueOf() ?? b.data.pubDate?.valueOf() ?? 0;
+    return tb - ta;
+  });
+---
+
+<BaseLayout title="旅行" description="旅行叙事：从相遇、互评与路上的选择里提炼出的长期线索。">
+  <section class="card hero">
+    <h1>旅行</h1>
+    <p>这里会持续沉淀你的在路经验，包括 Couchsurfing 互评里的叙事线索与关系观察。</p>
+  </section>
+
+  <section class="grid">
+    {entries.map((entry) => (
+      <a class="card item" href={`/travel/${entry.slug}`}>
+        <h2>{entry.data.title}</h2>
+        <p>{entry.data.description}</p>
+        <div class="meta">
+          {entry.data.place ? <span class="tag">{entry.data.place}</span> : null}
+          {entry.data.updatedDate ? <span>{entry.data.updatedDate.toISOString().slice(0, 10)}</span> : null}
+          {entry.data.tags?.length ? <span class="tag">#{entry.data.tags[0]}</span> : null}
+        </div>
+      </a>
+    ))}
+  </section>
+</BaseLayout>
