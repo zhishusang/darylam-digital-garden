@@ -30,7 +30,8 @@ const entries = (await getCollection("foodie"))
     text: entry.data.description?.trim() || excerpt(entry.body) || "Kitchen note in progress.",
     updatedDate: entry.data.updatedDate?.toISOString().slice(0, 10) ?? "",
     index: entry.data.index,
-  }));
+  }))
+  .filter((entry) => entry.image);
 ---
 
 <BaseLayout title="Foodie" description="Recipes and kitchen notes from Dary's daily learning.">
@@ -42,11 +43,7 @@ const entries = (await getCollection("foodie"))
   <section class="strip-list">
     {entries.map((entry) => (
       <a class="strip" href={`/foodie/${entry.slug}`}>
-        {entry.image ? (
-          <img src={entry.image} alt={entry.title} loading="lazy" decoding="async" />
-        ) : (
-          <div class="strip-image-placeholder" aria-hidden="true">Photo pending</div>
-        )}
+        <img src={entry.image} alt={entry.title} loading="lazy" decoding="async" />
         <div class="copy">
           <p class="index">{typeof entry.index === "number" ? String(entry.index).padStart(3, "0") : "—"}</p>
           <h2>{entry.title}</h2>
@@ -102,32 +99,6 @@ const entries = (await getCollection("foodie"))
     border-radius: 3px;
     border: 1px solid color-mix(in oklab, var(--border) 78%, transparent);
   }
-
-  .strip-image-placeholder {
-    width: 100%;
-    height: 124px;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    padding: 0 14px;
-    border-radius: 3px;
-    border: 1px solid color-mix(in oklab, var(--border) 65%, transparent);
-    color: var(--muted);
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    background: color-mix(in oklab, var(--bg) 90%, white);
-  }
-
-  .strip-image-placeholder::before {
-    content: "";
-    width: 36px;
-    height: 1px;
-    background: color-mix(in oklab, var(--text) 24%, transparent);
-    margin-right: 10px;
-  }
-
   .copy .index {
     margin: 0;
     font-family: var(--mono);

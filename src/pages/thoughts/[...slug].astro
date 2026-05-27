@@ -1,25 +1,13 @@
 ---
-import { getCollection, type CollectionEntry } from "astro:content";
-import ContentLayout from "../../layouts/ContentLayout.astro";
+import { getCollection } from "astro:content";
+import ExternalRedirect from "../../layouts/ExternalRedirect.astro";
+
+const notesUrl = "https://notes.darylam.com";
 
 export async function getStaticPaths() {
   const notes = await getCollection("garden");
-  return notes.map((note) => ({ params: { slug: note.slug }, props: { note } }));
+  return notes.map((note) => ({ params: { slug: note.slug } }));
 }
-
-type Props = { note: CollectionEntry<"garden"> };
-const { note } = Astro.props;
-const { Content } = await note.render();
 ---
 
-<ContentLayout
-  title={note.data.title}
-  description={note.data.description}
-  pubDate={note.data.pubDate}
-  updatedDate={note.data.updatedDate}
-  tags={note.data.tags}
-  audio={note.data.audio}
->
-  <Content />
-</ContentLayout>
-
+<ExternalRedirect title="Thoughts moved" target={notesUrl} label="notes.darylam.com" />

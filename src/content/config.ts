@@ -52,6 +52,20 @@ const goods = defineCollection({
   }),
 });
 
+const programs = defineCollection({
+  type: "content",
+  schema: z.object({
+    title: z.string(),
+    description: z.string().optional(),
+    tags: z.array(z.string()).default([]),
+    draft: z.boolean().default(false),
+    pubDate: z.coerce.date().optional(),
+    updatedDate: z.coerce.date().optional(),
+    status: z.string().optional(),
+    link: z.string().url().optional(),
+  }),
+});
+
 const foodie = defineCollection({
   type: "content",
   schema: z.object({
@@ -62,7 +76,6 @@ const foodie = defineCollection({
     pubDate: z.coerce.date().optional(),
     updatedDate: z.coerce.date().optional(),
     index: z.number().optional(),
-    source: z.string().optional(),
   }),
 });
 
@@ -90,7 +103,6 @@ const weapons = defineCollection({
     draft: z.boolean().default(false),
     pubDate: z.coerce.date().optional(),
     updatedDate: z.coerce.date(), // 完美承接你在 Obsidian 里写的 updatedDate
-    source: z.string().optional(),
   }),
 });
 
@@ -100,6 +112,7 @@ export const collections = {
   garden,
   diary,
   goods,
+  programs,
   foodie,
   travel,
   weapons, // 激活传送门

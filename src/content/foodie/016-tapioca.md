@@ -5,7 +5,6 @@ tags: []
 draft: false
 updatedDate: "2025-07-16"
 index: 16
-source: "6-Roles/Chef/料理笔记/✅Tapioca.md"
 ---
 https://www.youtube.com/watch?v=Bigo7YbGum8
 

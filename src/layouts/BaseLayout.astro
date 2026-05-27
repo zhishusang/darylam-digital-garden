@@ -11,14 +11,14 @@ const { title, description } = Astro.props;
 const pathname = Astro.url.pathname;
 const canonical = new URL(pathname, Astro.site ?? Astro.url.origin).toString();
 const isHome = pathname === "/";
+const notesUrl = "https://notes.darylam.com";
 
 const navItems = [
   { href: "/", label: "/home" },
   { href: "/foodie", label: "/foodie" },
   { href: "/travel", label: "/travel" },
-  { href: "/blog", label: "/blog" },
-  { href: "/thoughts", label: "/thoughts" },
-  { href: "/diary", label: "/diary" },
+  { href: notesUrl, label: "/notes", external: true },
+  { href: "/programs", label: "/programs" },
   { href: "/weapons", label: "/weapons" },
   { href: "/about", label: "/about" }
 ];
@@ -38,7 +38,12 @@ const navItems = [
           </h1>
           <nav class="pure-nav" aria-label="Primary">
             {navItems.map((item) => (
-              <a href={item.href} aria-current={pathname === item.href ? "page" : undefined}>
+              <a
+                href={item.href}
+                aria-current={!item.external && pathname === item.href ? "page" : undefined}
+                target={item.external ? "_blank" : undefined}
+                rel={item.external ? "noreferrer" : undefined}
+              >
                 {item.label}
               </a>
             ))}

@@ -1,5 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+
+const notesUrl = "https://notes.darylam.com";
 ---
 
 <BaseLayout title="Dary's Digital Garden" description="A minimalist entry to Dary Lam's digital garden.">
@@ -9,16 +11,15 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       <span></span><span></span><span></span><span></span><span></span><span></span>
     </div>
     <p>
-      10+ years writing. Into photography. Daily cooking. Deep-talk walks.
-      Vintage hunting. I love creating things.
+      Based in Shenzhen, I like writing, cooking, walking, travelling, learning
+      language, btw, vintage ootd as well.
     </p>
     <nav class="home-nav" aria-label="Primary">
       <a href="/">/home</a>
       <a href="/foodie">/foodie</a>
       <a href="/travel">/travel</a>
-      <a href="/blog">/blog</a>
-      <a href="/thoughts">/thoughts</a>
-      <a href="/diary">/diary</a>
+      <a href={notesUrl} target="_blank" rel="noreferrer">/notes</a>
+      <a href="/programs">/programs</a>
       <a href="/weapons">/weapons</a>
       <a href="/about">/about</a>
     </nav>

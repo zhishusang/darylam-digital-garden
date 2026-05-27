@@ -4,10 +4,10 @@
   "type": "module",
   "scripts": {
     "sync": "npm run sync:weapons && npm run sync:foodie",
-    "predev": "npm run sync",
-    "prebuild": "npm run sync",
     "dev": "ASTRO_TELEMETRY_DISABLED=1 astro dev",
+    "dev:sync": "npm run sync && npm run dev",
     "build": "ASTRO_TELEMETRY_DISABLED=1 astro build",
+    "build:sync": "npm run sync && npm run build",
     "preview": "ASTRO_TELEMETRY_DISABLED=1 astro preview",
     "check": "ASTRO_TELEMETRY_DISABLED=1 astro check",
     "sync:weapons": "node scripts/sync-weapons.mjs --prune",

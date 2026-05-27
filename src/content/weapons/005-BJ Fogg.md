@@ -4,7 +4,6 @@ description: ""
 tags: []
 draft: false
 updatedDate: "2026-05-24"
-source: "4-Projects/巨人的兵器/005-BJ Fogg.md"
 ---
 # 005 - BJ Fogg - "小到不可能失败"
 

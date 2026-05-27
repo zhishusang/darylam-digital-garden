@@ -2,10 +2,16 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import crypto from "node:crypto";
 
-const DEFAULT_OBSIDIAN_ROOT =
-  "/Users/Dary/Library/Mobile Documents/iCloud~md~obsidian/Documents/Dary's OB";
 const DEFAULT_RELATIVE_SOURCE = path.join("4-Projects", "巨人的兵器");
 const DEFAULT_ATTACHMENTS_REL = "Attachments";
+
+function resolveObsidianRoot() {
+  const root = process.env.OBSIDIAN_ROOT?.trim();
+  if (root) return root;
+  throw new Error(
+    "Missing OBSIDIAN_ROOT. Set it before running sync, for example: OBSIDIAN_ROOT='/path/to/obsidian' npm run sync:weapons",
+  );
+}
 
 function toSlugFilename(filePath, sourceRoot) {
   const rel = path.relative(sourceRoot, filePath);
@@ -118,7 +124,7 @@ function stripObsidianArtifacts(markdown) {
   return out.trim() + "\n";
 }
 
-function ensureFrontmatter(markdown, { title, updatedDate, source }) {
+function ensureFrontmatter(markdown, { title, updatedDate }) {
   const hasFrontmatter = markdown.startsWith("---\n");
   if (hasFrontmatter) return markdown;
   const safeTitle = title.replace(/"/g, '\\"');
@@ -129,7 +135,6 @@ function ensureFrontmatter(markdown, { title, updatedDate, source }) {
     `tags: []`,
     `draft: false`,
     `updatedDate: "${updatedDate}"`,
-    `source: "${source.replace(/"/g, '\\"')}"`,
     "---",
     "",
   ].join("\n");
@@ -137,7 +142,7 @@ function ensureFrontmatter(markdown, { title, updatedDate, source }) {
 }
 
 async function main() {
-  const obsidianRoot = process.env.OBSIDIAN_ROOT || DEFAULT_OBSIDIAN_ROOT;
+  const obsidianRoot = resolveObsidianRoot();
   const relativeSource = process.env.WEAPONS_SOURCE_REL || DEFAULT_RELATIVE_SOURCE;
   const sourceRoot = path.join(obsidianRoot, relativeSource);
 
@@ -173,7 +178,6 @@ async function main() {
   for (const { file, stat } of unique) {
     const baseTitle = path.basename(file, path.extname(file));
     const updatedDate = new Date(stat.mtimeMs).toISOString().slice(0, 10);
-    const source = path.relative(obsidianRoot, file).replace(/\\/g, "/");
 
     const raw = await fs.readFile(file, "utf8");
     const cleanedLinks = stripObsidianArtifacts(raw);
@@ -183,7 +187,7 @@ async function main() {
       sourceDir: path.dirname(file),
       publicAssetsDir,
     });
-    const withFm = ensureFrontmatter(withImages, { title: baseTitle, updatedDate, source });
+    const withFm = ensureFrontmatter(withImages, { title: baseTitle, updatedDate });
 
     const slug = toSlugFilename(file, sourceRoot);
     const outPath = path.join(destRoot, `${slug}.md`);

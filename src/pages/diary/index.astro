@@ -15,11 +15,6 @@ const years = [...byYear.keys()].sort((a, b) => b - a);
 ---
 
 <BaseLayout title="日记" description="以事件为主的日记摘选：挑选关键日子，做成可回看、可链接的时间线。">
-  <section class="card hero">
-    <h1>日记</h1>
-    <p>这里会收录我从每日记录里挑出的“关键日子”：重要事件、决定、旅途、相遇与转折。</p>
-  </section>
-
   <section class="timeline">
     {years.map((year) => (
       <div class="year">
@@ -39,7 +34,6 @@ const years = [...byYear.keys()].sort((a, b) => b - a);
 
   <style>
     .timeline {
-      padding-top: 18px;
       display: grid;
       gap: 18px;
     }
@@ -99,4 +93,3 @@ const years = [...byYear.keys()].sort((a, b) => b - a);
     }
   </style>
 </BaseLayout>
-

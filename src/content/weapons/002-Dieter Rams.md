@@ -4,7 +4,6 @@ description: ""
 tags: []
 draft: false
 updatedDate: "2026-05-24"
-source: "4-Projects/巨人的兵器/002-Dieter Rams.md"
 ---
 # 002 - Dieter Rams - "少，却更好"
 

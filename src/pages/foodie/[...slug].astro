@@ -4,7 +4,11 @@ import ContentLayout from "../../layouts/ContentLayout.astro";
 
 export async function getStaticPaths() {
   const entries = await getCollection("foodie");
-  return entries.map((entry) => ({ params: { slug: entry.slug }, props: { entry } }));
+  return entries
+    .filter(
+      (entry) => !entry.data.draft && Boolean(entry.body && /!\[[^\]]*\]\(([^)]+)\)/.test(entry.body)),
+    )
+    .map((entry) => ({ params: { slug: entry.slug }, props: { entry } }));
 }
 
 type Props = { entry: CollectionEntry<"foodie"> };

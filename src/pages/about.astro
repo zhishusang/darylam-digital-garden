@@ -1,5 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+
+const notesUrl = "https://notes.darylam.com";
 ---
 
 <BaseLayout title="About — Dary's Digital Garden" description="About Dary Lam and the stories behind this garden.">
@@ -47,16 +49,13 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         and stories in <a href="/foodie">foodie</a>.
       </p>
       <p>
-        Sometimes I have random ideas or something I think might be good for me or my friends. I put
-        them in <a href="/thoughts">thoughts</a>.
+        For thoughts, notes, and longer articles, I now keep them in
+        <a href={notesUrl} target="_blank" rel="noreferrer">notes</a>, a lighter writing space that
+        is easier for me to update.
       </p>
       <p>
-        I am a long-term diary writer. I have written diaries for over ten years, and I post some of
-        them in <a href="/diary">diary</a>.
-      </p>
-      <p>
-        For <a href="/blog">blogger</a>, those are official articles I posted in 微信公众号. They are
-        written in a more standard style, mostly in Chinese.
+        Some public projects live in <a href="/programs">programs</a> — things I want to build
+        slowly, openly, and leave behind in a useful form.
       </p>
 
       <p class="contact">Please feel free to connect me through <a href="mailto:hi@darylam.com">hi@darylam.com</a>.</p>

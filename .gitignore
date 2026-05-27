@@ -7,3 +7,8 @@ dist/
 !.env.example
 
 .npm-cache/
+obsidian-theme-presets/
+整体阅读整理方案.md
+微信读书笔记整理.md
+bookstore-atlas-*.png
+build-bookstore-atlas.mjs

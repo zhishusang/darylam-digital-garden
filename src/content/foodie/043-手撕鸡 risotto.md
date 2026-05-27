@@ -5,7 +5,6 @@ tags: []
 draft: false
 updatedDate: "2025-03-29"
 index: 43
-source: "6-Roles/Chef/料理笔记/手撕鸡+Risotto.md"
 ---
 一开始是朋友说想吃加白葡萄酒的 Risotto于是我就想挑战一下，后来发现 Risotto 要用到鸡汤，干脆直接再做个手撕鸡好了，于是两道菜一起做。看了6-Roles/Chef/树の菜谱/手撕鸡+Risotto，大概知道了做法。
   

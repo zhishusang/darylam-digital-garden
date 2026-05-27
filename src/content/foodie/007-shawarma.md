@@ -5,7 +5,6 @@ tags: []
 draft: false
 updatedDate: "2026-04-26"
 index: 7
-source: "6-Roles/Chef/料理笔记/Shawarma.md"
 ---
 一开始是在 Bumble 看到一个女生说，大概就是问你喜欢披萨还是 Shawarma（沙威玛），你的回答可能决定你未来能不能走到一起。
 

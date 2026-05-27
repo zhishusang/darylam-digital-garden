@@ -4,7 +4,6 @@ description: ""
 tags: []
 draft: false
 updatedDate: "2026-05-26"
-source: "4-Projects/巨人的兵器/008-Paul Graham.md"
 ---
 # 008 - Paul Graham - "Keep Your Identity Small"
 

@@ -12,11 +12,6 @@ const entries = (await getCollection("travel"))
 ---
 
 <BaseLayout title="旅行" description="旅行叙事：从相遇、互评与路上的选择里提炼出的长期线索。">
-  <section class="card hero">
-    <h1>旅行</h1>
-    <p>这里会持续沉淀你的在路经验，包括 Couchsurfing 互评里的叙事线索与关系观察。</p>
-  </section>
-
   <section class="grid">
     {entries.map((entry) => (
       <a class="card item" href={`/travel/${entry.slug}`}>

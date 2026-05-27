@@ -1,29 +1,7 @@
 ---
-import BaseLayout from "../../layouts/BaseLayout.astro";
-import { getCollection } from "astro:content";
+import ExternalRedirect from "../../layouts/ExternalRedirect.astro";
 
-const posts = (await getCollection("blog"))
-  .filter((e) => !e.data.draft)
-  .sort((a, b) => (b.data.pubDate?.valueOf() ?? 0) - (a.data.pubDate?.valueOf() ?? 0));
+const notesUrl = "https://notes.darylam.com";
 ---
 
-<BaseLayout title="文章" description="博客与文章列表。">
-  <section class="card hero">
-    <h1>文章</h1>
-    <p>这里放更“对外发布”的文章：主题明确、结构完整、可长期引用。</p>
-  </section>
-
-  <section class="grid">
-    {posts.map((post) => (
-      <a class="card item" href={`/blog/${post.slug}`}>
-        <h2>{post.data.title}</h2>
-        <p>{post.data.description}</p>
-        <div class="meta">
-          {post.data.pubDate ? <span>{post.data.pubDate.toISOString().slice(0, 10)}</span> : null}
-          {post.data.tags?.length ? <span class="tag">#{post.data.tags[0]}</span> : null}
-        </div>
-      </a>
-    ))}
-  </section>
-</BaseLayout>
-
+<ExternalRedirect title="Writing moved" target={notesUrl} label="notes.darylam.com" />

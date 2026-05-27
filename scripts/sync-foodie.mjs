@@ -2,10 +2,16 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import crypto from "node:crypto";
 
-const DEFAULT_OBSIDIAN_ROOT =
-  "/Users/Dary/Library/Mobile Documents/iCloud~md~obsidian/Documents/Dary's OB";
 const DEFAULT_RELATIVE_SOURCE = path.join("6-Roles", "Chef", "料理笔记");
 const DEFAULT_ATTACHMENTS_REL = "Attachments";
+
+function resolveObsidianRoot() {
+  const root = process.env.OBSIDIAN_ROOT?.trim();
+  if (root) return root;
+  throw new Error(
+    "Missing OBSIDIAN_ROOT. Set it before running sync, for example: OBSIDIAN_ROOT='/path/to/obsidian' npm run sync:foodie",
+  );
+}
 
 async function walk(dir) {
   const out = [];
@@ -99,7 +105,7 @@ async function transformEmbeds({ markdown, obsidianRoot, sourceDir, publicAssets
   return out;
 }
 
-function ensureFrontmatter(markdown, { title, updatedDate, source, index }) {
+function ensureFrontmatter(markdown, { title, updatedDate, index }) {
   const hasFrontmatter = markdown.startsWith("---\n");
   if (hasFrontmatter) return markdown;
   const safeTitle = title.replace(/"/g, '\\"');
@@ -111,7 +117,6 @@ function ensureFrontmatter(markdown, { title, updatedDate, source, index }) {
     `draft: false`,
     `updatedDate: "${updatedDate}"`,
     `index: ${index}`,
-    `source: "${source.replace(/"/g, '\\"')}"`,
     "---",
     "",
   ].join("\n");
@@ -119,7 +124,7 @@ function ensureFrontmatter(markdown, { title, updatedDate, source, index }) {
 }
 
 async function main() {
-  const obsidianRoot = process.env.OBSIDIAN_ROOT || DEFAULT_OBSIDIAN_ROOT;
+  const obsidianRoot = resolveObsidianRoot();
   const relativeSource = process.env.FOODIE_SOURCE_REL || DEFAULT_RELATIVE_SOURCE;
   const sourceRoot = path.join(obsidianRoot, relativeSource);
 
@@ -143,7 +148,6 @@ async function main() {
       .replace(/^✅\s*/u, "")
       .trim();
     const updatedDate = new Date(stat.mtimeMs).toISOString().slice(0, 10);
-    const source = path.relative(obsidianRoot, file).replace(/\\/g, "/");
     const index = i + 1;
 
     const raw = await fs.readFile(file, "utf8");
@@ -154,7 +158,7 @@ async function main() {
       sourceDir: path.dirname(file),
       publicAssetsDir,
     });
-    const withFm = ensureFrontmatter(withImages, { title: baseTitle, updatedDate, source, index });
+    const withFm = ensureFrontmatter(withImages, { title: baseTitle, updatedDate, index });
 
     const prefix = String(index).padStart(3, "0");
     const safeName = baseTitle
