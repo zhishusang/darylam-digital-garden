@@ -1,7 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 
-const notesUrl = "https://notes.darylam.com";
+const notesPath = "/notes";
 ---
 
 <BaseLayout title="About — Dary's Digital Garden" description="About Dary Lam and the stories behind this garden.">
@@ -50,8 +50,7 @@ const notesUrl = "https://notes.darylam.com";
       </p>
       <p>
         For thoughts, notes, and longer articles, I now keep them in
-        <a href={notesUrl} target="_blank" rel="noreferrer">notes</a>, a lighter writing space that
-        is easier for me to update.
+        <a href={notesPath}>notes</a>, a lighter writing space that is easier for me to update.
       </p>
       <p>
         Some public projects live in <a href="/programs">programs</a> — things I want to build

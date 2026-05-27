@@ -1,6 +1,6 @@
 ---
 import { getCollection, type CollectionEntry } from "astro:content";
-import ContentLayout from "../../layouts/ContentLayout.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
 
 export async function getStaticPaths() {
   const items = await getCollection("programs");
@@ -12,18 +12,196 @@ const { item } = Astro.props;
 const { Content } = await item.render();
 ---
 
-<ContentLayout
-  title={item.data.title}
-  description={item.data.description}
-  pubDate={item.data.pubDate}
-  updatedDate={item.data.updatedDate}
-  tags={item.data.tags}
->
-  {item.data.link ? (
-    <p style="margin: 0 0 18px">
-      Project link:
-      <a href={item.data.link} target="_blank" rel="noreferrer">{item.data.link}</a>
-    </p>
-  ) : null}
-  <Content />
-</ContentLayout>
+<BaseLayout title={`${item.data.title} · 我的数字花园`} description={item.data.description}>
+  <article class="program-page">
+    <header class="program-head">
+      <p class="kicker">Program</p>
+      <h1>{item.data.title}</h1>
+      <p class="summary">{item.data.description}</p>
+
+      <div class="program-meta">
+        {item.data.pubDate ? <span>Started · {item.data.pubDate.toISOString().slice(0, 10)}</span> : null}
+        {item.data.updatedDate ? <span>Updated · {item.data.updatedDate.toISOString().slice(0, 10)}</span> : null}
+        {item.data.status ? <span>Status · {item.data.status}</span> : null}
+      </div>
+
+      {item.data.tags?.length ? (
+        <div class="tag-row">
+          {item.data.tags.map((tag) => (
+            <span class="tag">#{tag}</span>
+          ))}
+        </div>
+      ) : null}
+    </header>
+
+    <div class="program-body">
+      <div class="program-prose">
+        <Content />
+      </div>
+
+      <aside class="program-aside">
+        <div class="note-card">
+          <p class="label">What this is</p>
+          <p>
+            A public project page inside the garden — simple for now, but meant to keep growing as
+            the plan becomes clearer.
+          </p>
+        </div>
+
+        {item.data.link ? (
+          <a class="out-link" href={item.data.link} target="_blank" rel="noreferrer">
+            Visit project link ↗
+          </a>
+        ) : null}
+      </aside>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .program-page {
+    padding-top: 12px;
+  }
+
+  .program-head {
+    margin-bottom: 28px;
+  }
+
+  .kicker {
+    margin: 0 0 8px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .program-head h1 {
+    margin: 0;
+    font-family: var(--serif);
+    font-size: clamp(30px, 5vw, 42px);
+    font-weight: 400;
+    line-height: 1.14;
+  }
+
+  .summary {
+    margin: 14px 0 0;
+    max-width: 36rem;
+    font-family: var(--serif);
+    font-size: 20px;
+    line-height: 1.68;
+    color: color-mix(in oklab, var(--text) 86%, transparent);
+  }
+
+  .program-meta,
+  .tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 14px;
+  }
+
+  .program-meta {
+    margin-top: 16px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .tag-row {
+    margin-top: 10px;
+  }
+
+  .tag {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .program-body {
+    display: grid;
+    gap: 28px;
+    padding-bottom: 120px;
+  }
+
+  .program-prose {
+    font-family: var(--serif);
+    font-size: 17px;
+    line-height: 1.9;
+    color: var(--text);
+  }
+
+  .program-prose :global(p) {
+    margin: 0 0 18px;
+  }
+
+  .program-prose :global(h2) {
+    margin: 36px 0 12px;
+    font-family: var(--serif);
+    font-size: 24px;
+    font-weight: 400;
+  }
+
+  .program-prose :global(ul) {
+    margin: 0 0 18px;
+    padding-left: 20px;
+  }
+
+  .program-prose :global(li) {
+    margin-bottom: 8px;
+  }
+
+  .program-aside {
+    display: grid;
+    gap: 12px;
+    align-content: start;
+  }
+
+  .note-card,
+  .out-link {
+    border: 1px solid color-mix(in oklab, var(--border) 88%, transparent);
+    background: color-mix(in oklab, var(--bg) 94%, var(--text) 2%);
+  }
+
+  .note-card {
+    padding: 14px 15px;
+  }
+
+  .note-card .label {
+    margin: 0 0 6px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .note-card p:last-child {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.72;
+    color: color-mix(in oklab, var(--text) 82%, transparent);
+  }
+
+  .out-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+    padding: 0 14px;
+    color: var(--text);
+  }
+
+  @media (min-width: 860px) {
+    .program-body {
+      grid-template-columns: minmax(0, 1fr) 220px;
+      align-items: start;
+    }
+
+    .program-aside {
+      position: sticky;
+      top: 28px;
+    }
+  }
+</style>

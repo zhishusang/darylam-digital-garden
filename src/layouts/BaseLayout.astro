@@ -11,13 +11,13 @@ const { title, description } = Astro.props;
 const pathname = Astro.url.pathname;
 const canonical = new URL(pathname, Astro.site ?? Astro.url.origin).toString();
 const isHome = pathname === "/";
-const notesUrl = "https://notes.darylam.com";
+const notesPath = "/notes";
 
 const navItems = [
   { href: "/", label: "/home" },
   { href: "/foodie", label: "/foodie" },
   { href: "/travel", label: "/travel" },
-  { href: notesUrl, label: "/notes", external: true },
+  { href: notesPath, label: "/notes" },
   { href: "/programs", label: "/programs" },
   { href: "/weapons", label: "/weapons" },
   { href: "/about", label: "/about" }
