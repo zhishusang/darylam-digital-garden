@@ -1,13 +1,19 @@
 ---
 import { getCollection, type CollectionEntry } from "astro:content";
 import ContentLayout from "../../layouts/ContentLayout.astro";
-import { existsSync } from "node:fs";
-import { fileURLToPath } from "node:url";
+import { existsSync, readFileSync } from "node:fs";
+import { join } from "node:path";
 
 export async function getStaticPaths() {
   function hasPublicAsset(src: string) {
     const decoded = decodeURIComponent(src);
-    return existsSync(fileURLToPath(new URL(`../../../public${decoded}`, import.meta.url)));
+    return existsSync(join(process.cwd(), "public", decoded.replace(/^\//, "")));
+  }
+
+  function rawMarkdown(filepath: string | undefined) {
+    if (!filepath) return "";
+    const absolutePath = join(process.cwd(), filepath);
+    return existsSync(absolutePath) ? readFileSync(absolutePath, "utf-8") : "";
   }
 
   function hasVisibleImage(markdown: string | undefined) {
@@ -18,7 +24,7 @@ export async function getStaticPaths() {
 
   const entries = await getCollection("foodie");
   return entries
-    .filter((entry) => !entry.data.draft && hasVisibleImage(entry.body))
+    .filter((entry) => !entry.data.draft && hasVisibleImage(rawMarkdown(entry.filePath)))
     .map((entry) => ({ params: { slug: entry.slug }, props: { entry } }));
 }
 

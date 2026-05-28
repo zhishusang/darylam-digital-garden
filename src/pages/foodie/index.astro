@@ -1,12 +1,11 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { getCollection } from "astro:content";
-import { existsSync } from "node:fs";
-import { fileURLToPath } from "node:url";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
+import { join } from "node:path";
 
 function hasPublicAsset(src: string) {
   const decoded = decodeURIComponent(src);
-  return existsSync(fileURLToPath(new URL(`../../../public${decoded}`, import.meta.url)));
+  return existsSync(join(process.cwd(), "public", decoded.replace(/^\//, "")));
 }
 
 function firstImage(markdown: string | undefined) {
@@ -31,18 +30,64 @@ function excerpt(markdown: string | undefined) {
     .slice(0, 150);
 }
 
-const entries = (await getCollection("foodie"))
-  .filter((entry) => !entry.data.draft)
-  .sort((a, b) => (a.data.index ?? 999999) - (b.data.index ?? 999999))
-  .map((entry) => ({
-    slug: entry.slug,
-    title: entry.data.title,
-    image: firstImage(entry.body),
-    text: entry.data.description?.trim() || excerpt(entry.body) || "Kitchen note in progress.",
-    updatedDate: entry.data.updatedDate?.toISOString().slice(0, 10) ?? "",
-    index: entry.data.index,
-  }))
-  .filter((entry) => entry.image);
+function frontmatterValue(source: string, key: string) {
+  const match = source.match(new RegExp(`^${key}:\\s*["']?(.*?)["']?\\s*$`, "m"));
+  return match?.[1]?.trim() ?? "";
+}
+
+const foodieDir = join(process.cwd(), "src", "content", "foodie");
+
+const entries = readdirSync(foodieDir)
+  .filter((name) => name.endsWith(".md"))
+  .map((name) => {
+    const absolutePath = join(foodieDir, name);
+    const source = readFileSync(absolutePath, "utf-8");
+    const parts = source.split("---");
+    const frontmatter = parts[1] ?? "";
+    const body = parts.slice(2).join("---").trim();
+    const image = firstImage(body);
+    const draft = frontmatterValue(frontmatter, "draft") === "true";
+    const title = frontmatterValue(frontmatter, "title");
+    const description = frontmatterValue(frontmatter, "description");
+    const updatedDate = frontmatterValue(frontmatter, "updatedDate");
+    const indexValue = Number(frontmatterValue(frontmatter, "index"));
+
+    return {
+      slug: name.replace(/\.md$/, "").replace(/\s+/g, "-"),
+      title,
+      image,
+      text: description || excerpt(body) || "Kitchen note in progress.",
+      updatedDate,
+      index: Number.isFinite(indexValue) ? indexValue : 999999,
+      draft,
+    };
+  })
+  .filter((entry) => !entry.draft && entry.image)
+  .sort((a, b) => a.index - b.index);
+
+function escapeHtml(value: string) {
+  return value
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;");
+}
+
+const listHtml = entries
+  .map(
+    (entry) => `
+      <a class="strip" href="/foodie/${escapeHtml(entry.slug)}">
+        <img src="${escapeHtml(entry.image ?? "")}" alt="${escapeHtml(entry.title)}" loading="lazy" decoding="async" />
+        <div class="copy">
+          <p class="index">${typeof entry.index === "number" ? String(entry.index).padStart(3, "0") : "—"}</p>
+          <h2>${escapeHtml(entry.title)}</h2>
+          <p class="text">${escapeHtml(entry.text)}</p>
+          <time>${escapeHtml(entry.updatedDate)}</time>
+        </div>
+      </a>
+    `
+  )
+  .join("");
 ---
 
 <BaseLayout title="Foodie" description="Recipes and kitchen notes from Dary's daily learning.">
@@ -51,19 +96,7 @@ const entries = (await getCollection("foodie"))
     <p>Recipes, experiments, and stories from my kitchen.</p>
   </section>
 
-  <section class="strip-list">
-    {entries.map((entry) => (
-      <a class="strip" href={`/foodie/${entry.slug}`}>
-        <img src={entry.image} alt={entry.title} loading="lazy" decoding="async" />
-        <div class="copy">
-          <p class="index">{typeof entry.index === "number" ? String(entry.index).padStart(3, "0") : "—"}</p>
-          <h2>{entry.title}</h2>
-          <p class="text">{entry.text}</p>
-          <time>{entry.updatedDate}</time>
-        </div>
-      </a>
-    ))}
-  </section>
+  <section class="strip-list" set:html={listHtml} />
 </BaseLayout>
 
 <style>
