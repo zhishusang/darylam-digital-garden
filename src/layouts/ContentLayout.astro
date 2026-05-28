@@ -43,4 +43,17 @@ const { title, description, pubDate, updatedDate, tags, audio } = Astro.props;
   .content :global(h1:first-child) {
     display: none;
   }
+
+  .content :global(img) {
+    display: block;
+    width: min(100%, 520px);
+    max-width: 100%;
+    height: auto;
+    margin: 22px 0;
+    border-radius: 4px;
+  }
+
+  .content :global(p > img:only-child) {
+    margin: 18px 0 22px;
+  }
 </style>
