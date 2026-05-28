@@ -64,30 +64,6 @@ const entries = readdirSync(foodieDir)
   })
   .filter((entry) => !entry.draft && entry.image)
   .sort((a, b) => a.index - b.index);
-
-function escapeHtml(value: string) {
-  return value
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;");
-}
-
-const listHtml = entries
-  .map(
-    (entry) => `
-      <a class="strip" href="/foodie/${escapeHtml(entry.slug)}">
-        <img src="${escapeHtml(entry.image ?? "")}" alt="${escapeHtml(entry.title)}" loading="lazy" decoding="async" />
-        <div class="copy">
-          <p class="index">${typeof entry.index === "number" ? String(entry.index).padStart(3, "0") : "—"}</p>
-          <h2>${escapeHtml(entry.title)}</h2>
-          <p class="text">${escapeHtml(entry.text)}</p>
-          <time>${escapeHtml(entry.updatedDate)}</time>
-        </div>
-      </a>
-    `
-  )
-  .join("");
 ---
 
 <BaseLayout title="Foodie" description="Recipes and kitchen notes from Dary's daily learning.">
@@ -96,7 +72,19 @@ const listHtml = entries
     <p>Recipes, experiments, and stories from my kitchen.</p>
   </section>
 
-  <section class="strip-list" set:html={listHtml} />
+  <section class="strip-list">
+    {entries.map((entry) => (
+      <a class="strip" href={`/foodie/${entry.slug}`}>
+        <img src={entry.image} alt={entry.title} loading="lazy" decoding="async" />
+        <div class="copy">
+          <p class="index">{typeof entry.index === "number" ? String(entry.index).padStart(3, "0") : "—"}</p>
+          <h2>{entry.title}</h2>
+          <p class="text">{entry.text}</p>
+          <time>{entry.updatedDate}</time>
+        </div>
+      </a>
+    ))}
+  </section>
 </BaseLayout>
 
 <style>
