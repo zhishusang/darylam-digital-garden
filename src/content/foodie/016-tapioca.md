@@ -3,7 +3,7 @@ title: "Tapioca"
 description: ""
 tags: []
 draft: false
-updatedDate: "2025-07-16"
+updatedDate: "2026-06-05"
 index: 16
 ---
 https://www.youtube.com/watch?v=Bigo7YbGum8
@@ -18,10 +18,10 @@ Tapioca 的做法
 
 今晚尝试了两种，一种是过筛一种是没过筛，都能做成功，但是过筛的显然会细腻一些，也更好吃一些，厚薄控制更容易一些。
 
-![36FDDF33-322C-4DF2-AE49-9EEA92CB97CF.jpeg](/foodie-assets/92fde04b57-36FDDF33-322C-4DF2-AE49-9EEA92CB97CF.jpeg)
+![36FDDF33-322C-4DF2-AE49-9EEA92CB97CF.jpeg](/foodie-assets/41d56ac74d-36FDDF33-322C-4DF2-AE49-9EEA92CB97CF.jpeg)
 
-![7C69EE6B-6915-4A94-92A6-1550990E43DD.jpeg](/foodie-assets/aed2b25944-7C69EE6B-6915-4A94-92A6-1550990E43DD.jpeg)
+![7C69EE6B-6915-4A94-92A6-1550990E43DD.jpeg](/foodie-assets/a230c11b9d-7C69EE6B-6915-4A94-92A6-1550990E43DD.jpeg)
 
-![F3C2B158-57B6-4D27-B639-6319A94863E7.jpeg](/foodie-assets/422b5ce6f0-F3C2B158-57B6-4D27-B639-6319A94863E7.jpeg)
+![F3C2B158-57B6-4D27-B639-6319A94863E7.jpeg](/foodie-assets/d4f78a4a08-F3C2B158-57B6-4D27-B639-6319A94863E7.jpeg)
 
-![103063CB-C450-4E7D-8941-016D00EE5199.jpeg](/foodie-assets/c5227ce3da-103063CB-C450-4E7D-8941-016D00EE5199.jpeg)
+![103063CB-C450-4E7D-8941-016D00EE5199.jpeg](/foodie-assets/1e17d1da1e-103063CB-C450-4E7D-8941-016D00EE5199.jpeg)

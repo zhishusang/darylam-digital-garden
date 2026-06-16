@@ -3,20 +3,20 @@ title: "手撕鸡+Risotto"
 description: ""
 tags: []
 draft: false
-updatedDate: "2025-03-29"
+updatedDate: "2026-06-05"
 index: 43
 ---
-一开始是朋友说想吃加白葡萄酒的 Risotto于是我就想挑战一下，后来发现 Risotto 要用到鸡汤，干脆直接再做个手撕鸡好了，于是两道菜一起做。看了6-Roles/Chef/树の菜谱/手撕鸡+Risotto，大概知道了做法。
-  
+一开始是朋友说想吃加白葡萄酒的 Risotto于是我就想挑战一下，后来发现 Risotto 要用到鸡汤，干脆直接再做个手撕鸡好了，于是两道菜一起做。看了D0 - Role Collections/Chef/树の菜谱/手撕鸡+Risotto，大概知道了做法。
+
 手撕鸡部分流程主要是：
-  
+
 1.盐、面粉洗鸡腿
 2.下锅煮加入姜片、葱段去浮沫到筷子可以插入后捞出放凉手撕
 3.姜葱蒜小米辣沫＋芝麻、辣椒面浇油＋盐、糖、耗油、香醋拌匀
 4.拌起来
-![image 18.png](/foodie-assets/e7707940d6-image%2018.png)
-  
-  
+![image 18.png](/foodie-assets/1eafc5293f-image%2018.png)
+
+
 Risotto 流程：
 1.橄榄油下锅加入洋葱或者葱白后加入蘑菇片
 2.炒一会儿加入黄油
