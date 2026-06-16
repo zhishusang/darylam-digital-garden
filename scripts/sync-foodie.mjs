@@ -68,6 +68,10 @@ function stripStatusPrefix(title) {
   return normalizeSpaces(String(title).replace(/^[✅❌💪]\s*/u, ""));
 }
 
+function isPublishableFoodieFile(file) {
+  return path.basename(file).startsWith("✅");
+}
+
 function publicTitle(title) {
   return normalizeSpaces(
     stripStatusPrefix(title).replace(/[（(]\s*Dary[^)）]*[)）]\s*$/iu, ""),
@@ -299,7 +303,8 @@ async function main() {
   const existingEntries = await readExistingEntries(destRoot);
   const attachmentIndex = await buildAttachmentIndex(obsidianRoot);
 
-  const files = await walk(sourceRoot);
+  const sourceFiles = await walk(sourceRoot);
+  const files = sourceFiles.filter(isPublishableFoodieFile);
   const stats = await Promise.all(
     files.map(async (file) => ({ file, stat: await fs.stat(file) })),
   );
@@ -356,7 +361,7 @@ async function main() {
   }
 
   // eslint-disable-next-line no-console
-  console.log(`Synced ${files.length} file(s) from: ${sourceRoot}`);
+  console.log(`Synced ${files.length} published file(s) from ${sourceFiles.length} source file(s): ${sourceRoot}`);
 }
 
 main().catch((err) => {
