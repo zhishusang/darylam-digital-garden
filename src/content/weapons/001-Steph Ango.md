@@ -3,7 +3,7 @@ title: "001-Steph Ango"
 description: ""
 tags: []
 draft: false
-updatedDate: "2026-05-24"
+updatedDate: "2026-06-05"
 ---
 # 001 - Steph Ango - "File over App"
 

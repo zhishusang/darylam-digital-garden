@@ -3,7 +3,7 @@ title: "008-Paul Graham"
 description: ""
 tags: []
 draft: false
-updatedDate: "2026-05-26"
+updatedDate: "2026-06-05"
 ---
 # 008 - Paul Graham - "Keep Your Identity Small"
 

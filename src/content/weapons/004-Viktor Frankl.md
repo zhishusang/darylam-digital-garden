@@ -3,7 +3,7 @@ title: "004-Viktor Frankl"
 description: ""
 tags: []
 draft: false
-updatedDate: "2026-05-24"
+updatedDate: "2026-06-05"
 ---
 # 004 - Viktor Frankl - "选择态度的最后自由"
 

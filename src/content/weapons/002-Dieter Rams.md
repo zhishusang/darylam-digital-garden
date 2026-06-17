@@ -3,7 +3,7 @@ title: "002-Dieter Rams"
 description: ""
 tags: []
 draft: false
-updatedDate: "2026-05-24"
+updatedDate: "2026-06-05"
 ---
 # 002 - Dieter Rams - "少，却更好"
 

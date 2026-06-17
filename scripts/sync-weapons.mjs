@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import crypto from "node:crypto";
 
-const DEFAULT_RELATIVE_SOURCE = path.join("4-Projects", "巨人的兵器");
+const DEFAULT_RELATIVE_SOURCE = path.join("C0 - Projects Wing", "巨人的兵器");
 const DEFAULT_ATTACHMENTS_REL = "Attachments";
 
 function resolveObsidianRoot() {

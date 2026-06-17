@@ -3,7 +3,7 @@ title: "005-BJ Fogg"
 description: ""
 tags: []
 draft: false
-updatedDate: "2026-05-24"
+updatedDate: "2026-06-05"
 ---
 # 005 - BJ Fogg - "小到不可能失败"
 
