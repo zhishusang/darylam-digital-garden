@@ -3,7 +3,7 @@ title: "Tapioca"
 description: ""
 tags: []
 draft: false
-updatedDate: "2026-06-16"
+updatedDate: "2026-06-22"
 index: 16
 ---
 大概是2015年吧，我接待了一个智利小哥。因为他在巴西待过半年，所以学会了那边的一种街头美食。
@@ -37,13 +37,13 @@ Tapioca 的做法 参考
 
 今晚尝试了两种，一种是过筛一种是没过筛，都能做成功，但是过筛的显然会细腻一些，也更好吃一些，厚薄控制更容易一些。
 
-![36FDDF33-322C-4DF2-AE49-9EEA92CB97CF.jpeg](/foodie-assets/41d56ac74d-36FDDF33-322C-4DF2-AE49-9EEA92CB97CF.jpeg)
+![36FDDF33-322C-4DF2-AE49-9EEA92CB97CF.webp](/foodie-assets/1f7c558f74-36FDDF33-322C-4DF2-AE49-9EEA92CB97CF.webp)
 
-![7C69EE6B-6915-4A94-92A6-1550990E43DD.jpeg](/foodie-assets/a230c11b9d-7C69EE6B-6915-4A94-92A6-1550990E43DD.jpeg)
+![7C69EE6B-6915-4A94-92A6-1550990E43DD.webp](/foodie-assets/929294f8ff-7C69EE6B-6915-4A94-92A6-1550990E43DD.webp)
 
-![F3C2B158-57B6-4D27-B639-6319A94863E7.jpeg](/foodie-assets/d4f78a4a08-F3C2B158-57B6-4D27-B639-6319A94863E7.jpeg)
+![F3C2B158-57B6-4D27-B639-6319A94863E7.webp](/foodie-assets/5761e3de17-F3C2B158-57B6-4D27-B639-6319A94863E7.webp)
 
-![103063CB-C450-4E7D-8941-016D00EE5199.jpeg](/foodie-assets/1e17d1da1e-103063CB-C450-4E7D-8941-016D00EE5199.jpeg)
+![103063CB-C450-4E7D-8941-016D00EE5199.webp](/foodie-assets/9ddf28a7f2-103063CB-C450-4E7D-8941-016D00EE5199.webp)
 
 参考视频：
 
